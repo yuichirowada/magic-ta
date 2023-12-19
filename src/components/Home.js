@@ -15,10 +15,8 @@ function Home() {
 
     return (
         <div className="content">
-            
             {isAuthenticated ? <p>logging into your wallet...</p> : <div><h1>Login to start transaction!</h1><p><LoginButton /></p></div>}
         </div>
-        
     );
 }
 
