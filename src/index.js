@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { Auth0Provider } from '@auth0/auth0-react';
-import { MagicOnAuth0OIDCProvider } from './MagicOnAuth0OIDCProvider';
+import { MagicProvider } from './MagicProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,9 +18,9 @@ root.render(
                 redirect_uri: window.location.origin
             }}
         >
-            <MagicOnAuth0OIDCProvider>
+            <MagicProvider>
                 <App />
-            </MagicOnAuth0OIDCProvider>
+            </MagicProvider>
         </Auth0Provider>
     </React.StrictMode>
 );

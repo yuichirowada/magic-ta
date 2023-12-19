@@ -1,8 +1,8 @@
-import { useMagicOnAuth0OIDC } from "../MagicOnAuth0OIDCProvider";
+import { useMagic } from "../MagicProvider";
 
 const DebuggerConsole = () => {
 
-    const data = useMagicOnAuth0OIDC();
+    const data = useMagic();
     function flattenObject(obj, depth = 1, parentKey = '', result = {}) {
         for (const [key, value] of Object.entries(obj)) {
             const newKey = parentKey ? `${parentKey}.${key}` : key;

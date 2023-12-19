@@ -1,10 +1,10 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMagicOnAuth0OIDC } from "../MagicOnAuth0OIDCProvider";
+import { useMagic } from "../MagicProvider";
 
 const LoginButton = () => {
   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
-  const { magic } = useMagicOnAuth0OIDC();
+  const { magic } = useMagic();
 
   async function logoutAll() {
     logout({ logoutParams: { returnTo: window.location.origin } });

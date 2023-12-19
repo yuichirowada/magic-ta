@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMagicOnAuth0OIDC } from "../MagicOnAuth0OIDCProvider";
+import { useMagic } from "../MagicProvider";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "./LoginButton";
 
 function Home() {
-    const { isLoggedIn } = useMagicOnAuth0OIDC();
+    const { isLoggedIn } = useMagic();
     const { isAuthenticated } = useAuth0();
     const navigate = useNavigate();
 
@@ -14,9 +14,9 @@ function Home() {
     }, [isLoggedIn, navigate]);
 
     return (
-        <div>
-            <h1>Home</h1>
-            {isAuthenticated ? <p>logging into your wallet...</p> : <p><LoginButton /></p>}
+        <div className="content">
+            
+            {isAuthenticated ? <p>logging into your wallet...</p> : <div><h1>Login to start transaction!</h1><p><LoginButton /></p></div>}
         </div>
         
     );

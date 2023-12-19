@@ -17,6 +17,10 @@
 
 .content {
   padding: 16px;
+  background-color: #ac2b99;
+  color:aliceblue;
+  border-radius: 6px;
+  margin-bottom: 12px;
 }
 
 .App-link {
@@ -36,11 +40,6 @@
 
 .auth0-header-bar {
   background-color: #2B6BAC;
-  color:aliceblue;
-}
-
-.magic-header-bar {
-  background-color: #ac2b99;
   color:aliceblue;
 }
 
