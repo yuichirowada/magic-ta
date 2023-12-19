@@ -1,16 +1,33 @@
 import './App.css';
-import LoginButton from './components/LoginButton';
 import Auth0HeaderBar from './components/Auth0HeaderBar';
 import MagicWalletBar from './components/MagicWalletBar';
+
+import Home from './components/Home';
+import Wallet from './components/Wallet';
+
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import './index.css';
+
+
+const router = createBrowserRouter([
+  { path: "/", element: <Home /> },
+  { path: "/wallet", element: <Wallet /> }
+]);
+
 
 function App() {
   return (
     <div className="App">
-      <Auth0HeaderBar />
-      <MagicWalletBar />
-      <header className="App-header">
-        <LoginButton />
-      </header>
+      <div className="container">
+        <Auth0HeaderBar />
+        <MagicWalletBar />
+        <div className="content">
+        <RouterProvider router={router} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,20 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-    createBrowserRouter,
-    RouterProvider,
-} from "react-router-dom";
-import './index.css';
+
 import App from './App';
 
 import { Auth0Provider } from '@auth0/auth0-react';
-
-const router = createBrowserRouter([
-    { path: "/", element: <App /> },
-    { path: "/profile", element: <App /> }
-]);
-
-console.log(process.env);
+import { MagicOnAuth0OIDCProvider } from './MagicOnAuth0OIDCProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -28,7 +18,9 @@ root.render(
                 redirect_uri: window.location.origin
             }}
         >
-            <RouterProvider router={router} />
+            <MagicOnAuth0OIDCProvider>
+                <App />
+            </MagicOnAuth0OIDCProvider>
         </Auth0Provider>
     </React.StrictMode>
 );

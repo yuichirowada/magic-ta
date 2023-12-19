@@ -1,3 +1,9 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,21 +16,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.header-bar {
-  display: flex;
-  align-items: center; /* Vertical alignment */
-  justify-content: space-between; /* Horizontal alignment */
-  height: 44px;
-}
-
-.auth0-header-bar {
-  background-color: #2B6BAC;
-  color:aliceblue;
-}
-
-.magic-header-bar {
-  background-color: #ac2b99;
-  color:aliceblue;
 }

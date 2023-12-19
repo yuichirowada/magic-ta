@@ -6,9 +6,9 @@ const Auth0HeaderBar = () => {
   const { user, isAuthenticated, isLoading, getIdTokenClaims } = useAuth0();
   console.log('auth0 user', user);
 
-  if (isLoading) { return <div class="header-bar auth0-header-bar"><div>Loading ...</div></div>; }
-  if (isAuthenticated) { return <div class="header-bar auth0-header-bar"><div>Auth0</div><div>{user.name || 'NO NAME'} ({user.email || 'NO EMAIL' }) <LoginButton /></div></div>; }
-  return <div class="header-bar auth0-header-bar"><div><LoginButton /></div></div>;
+  if (isLoading) { return <div className="header-bar auth0-header-bar"><div>Auth0</div><div>Loading ...</div></div>; }
+  if (isAuthenticated) { return <div className="header-bar auth0-header-bar"><div>Auth0</div><div>{user.email || 'NO EMAIL' } <LoginButton /></div></div>; }
+  return <div className="header-bar auth0-header-bar"><div>Auth0</div><div><LoginButton /></div></div>;
 };
 
 export default Auth0HeaderBar;
