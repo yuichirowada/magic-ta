@@ -3,8 +3,13 @@ import { Magic } from 'magic-sdk';
 import { OpenIdExtension } from '@magic-ext/oidc';
 import { useAuth0 } from "@auth0/auth0-react";
 
-const magic = new Magic(process.env.REACT_APP_MAGIC_API_KEY, { extensions: [new OpenIdExtension()], deferPreload: true });
-console.log('magic', magic);
+const networks = {
+  goerli: 'goerli',
+  polygon: {
+    rpcUrl: 'https://polygon-rpc.com/', // Polygon RPC URL
+    chainId: 137 // Polygon chain id
+  }
+};
 
 // Create a context for the authentication state
 const MagicOnAuth0OIDCContext = createContext();
@@ -12,20 +17,31 @@ const MagicOnAuth0OIDCContext = createContext();
 export const MagicOnAuth0OIDCProvider = ({ children }) => {
 
   const { isAuthenticated, getIdTokenClaims } = useAuth0();
+
+  // some of these may be redundant, for debugging
   const [magicUser, setMagicUser] = useState();
-  const [magicUserMetadata, setMagicUserMetadata] = useState();
   const [didToken, setDidToken] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [magicWallet, setMagicWallet] = useState();
   const [provider, setProvider] = useState();
   const [rpcProvider, setRpcProvider] = useState();
 
+  // network selector (default goerli)
+  // not all networks are supported just by 'network' property, so this feature is incomplete
+  const [network, setNetwork] = useState('goerli');
+  const updateNetwork = (newValue) => { setNetwork(newValue); };
+
+  // Initialize Magic instance, shared globally via context
+  // it could be outside of this component, but for the network switch feature, it's here
+  const [magic, setMagic] = useState(new Magic(process.env.REACT_APP_MAGIC_API_KEY, { network: networks[network], extensions: [new OpenIdExtension()], deferPreload: true }));
+  
   useEffect(() => {
-    console.log('MagicOnAuth0OIDCProvider', isAuthenticated);
     (async function getMagicWallet() {
+      console.log('MagicOnAuth0OIDCProvider', network);
+      setMagic(new Magic(process.env.REACT_APP_MAGIC_API_KEY, { network: networks[network], extensions: [new OpenIdExtension()], deferPreload: true }));
+
+      // If the user is authenticated with Auth0, log them in with Magic
       if (isAuthenticated && !isLoggedIn) {
         const token = await getIdTokenClaims();
-        console.log('token', token);
         setDidToken(await magic.openid.loginWithOIDC({
           jwt: token.__raw,
           providerId: process.env.REACT_APP_MAGIC_PROVIDER_ID
@@ -33,21 +49,19 @@ export const MagicOnAuth0OIDCProvider = ({ children }) => {
         setIsLoggedIn(await magic.user.isLoggedIn());
       }
 
+      // If the user is logged in with Magic, get the user's info
       if (isLoggedIn) {
         setMagicUser(await magic.user.getInfo());
-        setMagicUserMetadata(await magic.user.getMetadata());
-        setMagicWallet(await magic.wallet.getInfo());
         setProvider(await magic.wallet.getProvider());
         setRpcProvider(magic.rpcProvider);
       }
-      
-      console.log('isLoggedIn', isLoggedIn, 'magicUser', magicUser);
+
     })();
 
-  }, [isAuthenticated, isLoggedIn]);
+  }, [isAuthenticated, isLoggedIn, network]);
 
   return (
-    <MagicOnAuth0OIDCContext.Provider value={{ magic, magicUser, didToken, isLoggedIn, magicUserMetadata, magicWallet, provider, rpcProvider }}>
+    <MagicOnAuth0OIDCContext.Provider value={{ magic, magicUser, didToken, isLoggedIn, provider, rpcProvider, networks, network, updateNetwork }}>
       {children}
     </MagicOnAuth0OIDCContext.Provider>
   );

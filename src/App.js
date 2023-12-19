@@ -3,7 +3,7 @@ import Auth0HeaderBar from './components/Auth0HeaderBar';
 import MagicWalletBar from './components/MagicWalletBar';
 
 import Home from './components/Home';
-import Wallet from './components/Wallet';
+import TransactionConsole from './components/TransactionConsole';
 
 import {
   createBrowserRouter,
@@ -14,9 +14,8 @@ import './index.css';
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
-  { path: "/wallet", element: <Wallet /> }
+  { path: "/wallet", element: <TransactionConsole /> }
 ]);
-
 
 function App() {
   return (

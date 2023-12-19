@@ -1,31 +1,34 @@
 import { useMagicOnAuth0OIDC } from "../MagicOnAuth0OIDCProvider";
 
-const DebuggerConsole = ({ dataObject }) => {
+const DebuggerConsole = () => {
 
     const data = useMagicOnAuth0OIDC();
-    console.log(data);
-
-    const renderSecondLevel = (parentKey, secondLevelObject) => {
-        return (
-            <ul>
-                {Object.entries(secondLevelObject).map(([key, value]) => {
-                    const compositeKey = `${parentKey}.${key}`;
-                    let displayValue = (typeof value === 'object' && value != null) ? '[Object]' : value;
-                    return <li key={compositeKey}>{compositeKey}: {displayValue} [{typeof displayValue}]</li>;
-                })}
-            </ul>
-        );
-    };
+    function flattenObject(obj, depth = 1, parentKey = '', result = {}) {
+        for (const [key, value] of Object.entries(obj)) {
+            const newKey = parentKey ? `${parentKey}.${key}` : key;
+    
+            if (typeof value === 'object' && value !== null) {
+                if (depth < 3) {
+                    flattenObject(value, depth + 1, newKey, result);
+                } else {
+                    result[newKey] = '[object]';
+                }
+            } else {
+                if (value == null) { result[newKey] = '[blank]'; }
+                else if (typeof value == 'function') { result[newKey] = '[function]'; }
+                else { result[newKey] = value.toString(); }
+            }
+        }
+        return result;
+    }
+    const flattenedData = flattenObject(data);
 
     return (
         <div className="debug">
-            {Object.entries(data).map(([key, value]) => {
+            <button className="button" onClick={() => console.log(data)}>console.log(data)</button>
+            {Object.entries(flattenedData).map(([key, value]) => {
                 return (
-                    <div key={key}>
-                        {typeof value === 'object' && value != null
-                            ? renderSecondLevel(key, value)
-                            : <p>{key}: {value} [{typeof value}]</p>}
-                    </div>
+                    <div key={key}><p><span style={{ color: 'darkgray' }}>{key}:</span> {value == null || typeof value === 'function' ? '-' : value.toString()}</p></div>
                 );
             })}
         </div>
