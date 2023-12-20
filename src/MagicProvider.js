@@ -17,6 +17,7 @@ export const MagicProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [magicUser, setMagicUser] = useState();
   const [accountBalance, setAccountBalance] = useState();
+  const [jwt, setJwt] = useState();
 
   // Initialize Magic instance, shared globally via context
   const magic = new Magic(process.env.REACT_APP_MAGIC_API_KEY, { extensions: [new OpenIdExtension()], deferPreload: true });
@@ -40,6 +41,7 @@ export const MagicProvider = ({ children }) => {
       // If the user is authenticated with Auth0, log them in with Magic
       if (isAuthenticated) {
         const token = await getIdTokenClaims();
+        setJwt(token);
         setDidToken(await magic.openid.loginWithOIDC({
           jwt: token.__raw,
           providerId: process.env.REACT_APP_MAGIC_PROVIDER_ID
@@ -57,7 +59,7 @@ export const MagicProvider = ({ children }) => {
 
 
   return (
-    <MagicContext.Provider value={{ magic, didToken, isLoggedIn, magicUser, accountBalance }}>
+    <MagicContext.Provider value={{ magic, didToken, isLoggedIn, magicUser, accountBalance, jwt }}>
       {children}
     </MagicContext.Provider>
   );
