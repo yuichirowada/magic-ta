@@ -43,17 +43,46 @@
   color:aliceblue;
 }
 
+.debug {
+  margin-top: 100px;
+  text-align: left;
+}
+
 .debug * {
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: left;
   list-style-type: none;
   padding-left: 0;
   margin-left: 0;
 }
 
 .button, .select {
-  display: inline-block;
+  display: inline;
   padding: 6px 12px;
   margin: 3px 6px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+}
+
+table tr {
+  border-bottom: 1px solid #333;
+}
+
+table tr:last-child {
+  border-bottom: none;
+}
+
+table th {
+  padding: 12px;
+  text-align: right;
+  width: 50%;
+}
+
+table td {
+  padding: 12px;
+  text-align: left;
 }

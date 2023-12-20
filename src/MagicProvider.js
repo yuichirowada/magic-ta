@@ -19,7 +19,7 @@ export const MagicProvider = ({ children }) => {
   const [accountBalance, setAccountBalance] = useState();
 
   // Initialize Magic instance, shared globally via context
-  const magic = new Magic(process.env.REACT_APP_MAGIC_API_KEY, { network: 'goerli', extensions: [new OpenIdExtension()], deferPreload: true });
+  const magic = new Magic(process.env.REACT_APP_MAGIC_API_KEY, { extensions: [new OpenIdExtension()], deferPreload: true });
 
   const provider = new ethers.BrowserProvider(magic.rpcProvider);
   useEffect(() => {
