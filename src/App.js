@@ -23,7 +23,7 @@ function App() {
       <div className="container">
         <Auth0HeaderBar />
         <RouterProvider router={router} />
-        <DebuggerConsole />
+        {/* <DebuggerConsole /> */}
       </div>
     </div>
   );
