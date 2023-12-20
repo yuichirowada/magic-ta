@@ -1,22 +1,24 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMagic } from "../MagicProvider";
-import LoginButton from "./LoginButton";
 
-function Home() {
-    const { isLoggedIn } = useMagic();
+function Login() {
+    const { isLoggedIn, handleOAuthResult } = useMagic();
     const navigate = useNavigate();
 
     useEffect(() => {
       if (isLoggedIn) { navigate('/wallet'); }
     }, [isLoggedIn, navigate]);
 
+    useEffect(() => {
+        handleOAuthResult();
+    }, []);
 
     return (
         <div className="content">
-            {isLoggedIn ? <div><a href="/wallet">Go to wallet!</a></div> : <div><h1>Login to start transaction!</h1><p><LoginButton /></p></div>}
+            <div><h1>Logging In...</h1></div>
         </div>
     );
 }
 
-export default Home;
+export default Login;

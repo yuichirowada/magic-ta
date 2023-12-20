@@ -10,8 +10,8 @@ function TransactionConsole() {
 
     useEffect(() => {
         if (!isLoggedIn) { navigate('/'); }
-      }, [isLoggedIn, navigate]);
-  
+    }, [isLoggedIn, navigate]);
+
     return (
         <div className="content">
             <h1>Wallet</h1>

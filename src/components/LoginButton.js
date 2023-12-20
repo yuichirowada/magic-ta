@@ -1,19 +1,16 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useMagic } from "../MagicProvider";
 
 const LoginButton = () => {
-  const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
-  const { magic } = useMagic();
+  const { magic, isLoggedIn, beginOAuthFlow } = useMagic();
 
   async function logoutAll() {
-    logout({ logoutParams: { returnTo: window.location.origin } });
     await magic.user.logout();
   }
 
-  return isAuthenticated ? 
-    <button className="button" onClick={() => logoutAll()}>Logout</button> : 
-    <button className="button" onClick={() => loginWithRedirect()}>Login</button>;
+  return isLoggedIn ? 
+    <button className="button" onClick={async () => await magic.user.logout()}>Logout</button> : 
+    <button className="button" onClick={() => beginOAuthFlow()}>Login</button>;
 };
 
 export default LoginButton;
