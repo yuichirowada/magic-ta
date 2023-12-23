@@ -2,8 +2,11 @@ import { useState, createContext, useContext, useEffect } from 'react';
 import { Magic } from 'magic-sdk';
 import { OpenIdExtension } from '@magic-ext/oidc';
 import { useAuth0 } from "@auth0/auth0-react";
-import { ethers } from "ethers";
 
+// import { ethers } from "ethers";
+import Web3 from 'web3';
+
+console.log(Web3.utils, Web3.modules, Web3.providers);
 
 // Create a context for the authentication state
 const MagicContext = createContext();
@@ -22,13 +25,23 @@ export const MagicProvider = ({ children }) => {
   // Initialize Magic instance, shared globally via context
   const magic = new Magic(process.env.REACT_APP_MAGIC_API_KEY, { extensions: [new OpenIdExtension()], deferPreload: true });
 
-  const provider = new ethers.BrowserProvider(magic.rpcProvider);
+  const web3 = new Web3(magic.rpcProvider);
+  // const ethersProvider = new ethers.BrowserProvider(magic.rpcProvider);
+
+  console.log(web3);
+
   useEffect(() => {
     (async function getBalance() {
       const isLoggedIn = await magic.user.isLoggedIn();
       if (isLoggedIn && magicUser) {
-        const weiBalance = await provider.getBalance(magicUser.publicAddress);
-        const ethBalance = ethers.formatEther(weiBalance);
+
+        console.log('getting eth balance', web3.eth, magicUser.publicAddress);
+        const weiBalance = await web3.eth.getBalance(magicUser.publicAddress);
+        const ethBalance = parseFloat(web3.utils.fromWei(weiBalance, 'ether'));
+
+        // const weiBalance = await ethersProvider.getBalance(magicUser.publicAddress);
+        // const ethBalance = ethers.formatEther(weiBalance);
+
         console.log(weiBalance, ethBalance);
         setAccountBalance(ethBalance);
       }
@@ -59,7 +72,7 @@ export const MagicProvider = ({ children }) => {
 
 
   return (
-    <MagicContext.Provider value={{ magic, didToken, isLoggedIn, magicUser, accountBalance, jwt }}>
+    <MagicContext.Provider value={{ magic, didToken, isLoggedIn, magicUser, accountBalance, jwt, web3 }}>
       {children}
     </MagicContext.Provider>
   );
